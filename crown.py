@@ -10,15 +10,17 @@ import matplotlib.pyplot as plt
 class Full3Net(torch.nn.Module):
     def __init__(self, hid):
         super(Full3Net, self).__init__()
-        self.hid1 = nn.Parameter(torch.randn((1),requires_grad=True))
-        self.hid2 = nn.Parameter(torch.randn((1),requires_grad=True))
+        self.hid1 = nn.Linear(2,hid)
+        self.hid2 = nn.Linear(hid,hid)
+        self.output = nn.Linear(hid,2)
     def forward(self, input):
         # apply network and return output
-        hid_sum = self.hid1(input)
-        hidden  = torch.tanh(hid_sum)
-        out_sum = self.hid_out(hidden)
-        output  = torch.sigmoid(out_sum)
-        return 0*input[:,0]
+        hid1_store = self.hid1(input)
+        self.hid1_sum = torch.tanh(hid1_store)
+        hid2_stuff = self.hid2(self.hid1_sum)
+        self.hid2_sum = torch.tanh(hid2_stuff)
+        output  = torch.sigmoid(self.hid2_sum)
+        return output
 
 class Full4Net(torch.nn.Module):
     def __init__(self, hid):
