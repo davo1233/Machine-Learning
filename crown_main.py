@@ -25,7 +25,7 @@ def train(net, train_loader, optimizer):
         correct += (pred == target).float().sum()
         total += target.size()[0]
         accuracy = 100*correct/total
-
+        
     if epoch % 100 == 0:
         print('ep:%5d loss: %6.4f acc: %5.2f' %
              (epoch,loss.item(),accuracy))
