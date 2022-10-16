@@ -51,7 +51,6 @@ class DenseNet(torch.nn.Module):
     def forward(self, input):
         # apply network and return output
         hid1_store = self.hid1_layer(input)
-
         self.hid1 = torch.tanh(hid1_store)
         hid2_store = self.hid2_layer(torch.cat((self.hid1,input),1))
         self.hid2 = torch.tanh(hid2_store)       
