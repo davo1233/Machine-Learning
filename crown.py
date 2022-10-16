@@ -45,8 +45,16 @@ class Full4Net(torch.nn.Module):
 class DenseNet(torch.nn.Module):
     def __init__(self, num_hid):
         super(DenseNet, self).__init__()
-
+        self.hid1_layer = nn.Linear(2,num_hid)
+        self.hid2_layer = nn.Linear(num_hid + 2,num_hid)
+        self.output = nn.Linear(num_hid + num_hid + 2,1)
     def forward(self, input):
-        self.hid1 = None
-        self.hid2 = None
-        return 0*input[:,0]
+        # apply network and return output
+        hid1_store = self.hid1_layer(input)
+
+        self.hid1 = torch.tanh(hid1_store)
+        hid2_store = self.hid2_layer(torch.cat((self.hid1,input),1))
+        self.hid2 = torch.tanh(hid2_store)       
+        output_store = self.output(torch.cat((self.hid2,self.hid1,input),1))
+        output1 = torch.sigmoid(output_store)
+        return output1
